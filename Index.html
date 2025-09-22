@@ -1,46 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Halo Wallet</title>
+  <meta charset="utf-8" />
+  <title>Halo Wallet — ring spins</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000; /* space-black background */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#000;
     }
 
     .halo-wallet {
+      position: relative;
       width: 104px;
       height: 104px;
       border-radius: 50%;
-      border: 4px solid #00ffff; /* main circle */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #00ffff;
-      font-size: 1.2rem;
-      font-weight: bold;
-      animation: spin 2s linear infinite;
-      box-shadow: 0 0 20px #00ffff,
-                  0 0 40px #00ffff,
-                  0 0 60px #00ffff; /* glowing halo */
+      background: #000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index: 2;
+      overflow: visible;
+      box-shadow: 0 0 24px rgba(0,0,0,0.4);
+      border: 2px solid rgba(255,255,255,0.04);
     }
 
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg) scale(1.1);
-      }
-      100% {
-        transform: rotate(360deg) scale(1);
-      }
+    /* rotating halo ring behind the icon */
+    .halo-wallet::before{
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 160px;   /* a bit larger so the halo surrounds the circle */
+      height: 160px;
+      transform: translate(-50%,-50%);
+      border-radius: 50%;
+      background: conic-gradient(cyan, magenta, yellow, lime, blue, cyan);
+      filter: blur(12px);
+      opacity: 0.95;
+      z-index: 1;
+      animation: ring-spin 4s linear infinite;
+      pointer-events: none;
+    }
+
+    .icon {
+      position: relative;
+      z-index: 3;
+      font-size: 1.6rem;
+      color: white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width: 88px;
+      height: 88px;
+      border-radius:50%;
+      background: linear-gradient(#000,#040404);
+      box-shadow: 0 0 12px rgba(255,255,255,0.02) inset;
+      animation: heartbeat 2.2s ease-in-out infinite;
+    }
+
+    @keyframes ring-spin {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+
+    @keyframes heartbeat {
+      0%   { transform: scale(1.06); }
+      40%  { transform: scale(1); }
+      60%  { transform: scale(1.02); }
+      100% { transform: scale(1.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .halo-wallet::before, .icon { animation: none; }
     }
   </style>
 </head>
 <body>
-  <div class="halo-wallet">💳</div>
+  <div class="halo-wallet">
+    <div class="icon">💳</div>
+  </div>
 </body>
 </html>
